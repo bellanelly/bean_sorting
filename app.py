@@ -20,8 +20,7 @@ def model_inference(img_x, model_name: str, prob_threshold: int, classes_to_show
     img_d = ob1.detections(model, cvimg, width, height, myclasses, pil_img)
     return img_d
 
-
-description = "Yolov5 beans, groundnuts, stones detection 😊"
+description = "This system sorts out beans mixed with stones and groundnuts by giving it a different color. 😊"
 with gr.Blocks(theme="NoCrypt/miku") as demo:
     gr.Markdown("# Object Detection With YOLOv5")
     gr.Markdown(description)
