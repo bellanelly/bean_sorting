@@ -52,7 +52,7 @@ def detections(model,image,model_width,model_height, my_class_names, pil_image):
 
         if "bean" in my_class_names[class_ids[i]]:
             print(my_class_names[class_ids[i]])
-            cv2.rectangle(image, (left, top), (left + width, top + height), (0, 0, 255), 3)
+            cv2.rectangle(image, (left, top), (left + width, top + height), (0, 0, 255), 2)
         else:
             cv2.rectangle(image, (left, top), (left + width, top + height), (255, 0, 0), 2)
         label = "{}:{:.2f}".format(my_class_names[class_ids[i]], score[i])
