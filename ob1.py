@@ -10,35 +10,21 @@ def class_names():
 
         return classes
     
-
-# my_class_names=class_names()
-
-
 def detections(model,image,model_width,model_height, my_class_names, pil_image):
     blob = cv2.dnn.blobFromImage(image, 1/255 , (model_width,model_height), swapRB=True, mean=(0,0,0), crop= False)
     model.setInput(blob)
-    
     outputs= model.forward(model.getUnconnectedOutLayersNames())
-    
     out= outputs[0]
-
     n_detections= out.shape[1]
     height,width=image.shape[:2]
     x_scale= width/model_width
     y_scale= height/model_height
-
     conf_threshold= 0.3
     score_threshold= 0.5
     nms_threshold=0.5
-
-
-
     class_ids=[] 
     score=[] 
     boxes=[]
-
-    
-
     for i in range(n_detections):
                 detect=out[0][i]
                 confidence= detect[4]
@@ -57,7 +43,6 @@ def detections(model,image,model_width,model_height, my_class_names, pil_image):
                         boxes.append(box)
 
     indices = cv2.dnn.NMSBoxes(boxes, np.array(score), conf_threshold, nms_threshold)
-    #print(indices)
     for i in indices:
         box = boxes[i]
         left = box[0]
@@ -67,7 +52,7 @@ def detections(model,image,model_width,model_height, my_class_names, pil_image):
 
         if "bean" in my_class_names[class_ids[i]]:
             print(my_class_names[class_ids[i]])
-            cv2.rectangle(image, (left, top), (left + width, top + height), (0, 255, 0), 2)
+            cv2.rectangle(image, (left, top), (left + width, top + height), (0, 0, 255), 2)
         else:
             cv2.rectangle(image, (left, top), (left + width, top + height), (255, 0, 0), 2)
         label = "{}:{:.2f}".format(my_class_names[class_ids[i]], score[i])
@@ -84,25 +69,12 @@ def detections(model,image,model_width,model_height, my_class_names, pil_image):
 
     return img
 
-
-
 if __name__=="__main__":
-
     model=cv2.dnn.readNetFromONNX( "best.onnx")
-
     my_class_names=class_names()
-
     image=cv2.imread(r"c:\Users\EliteBook\Desktop\b3\3 (5).jpg")
-
-    # image= cv2.resize(image,(500,700))
-
     pil_img = False
-    
     width,height=640,640
-
     img_det = detections(model,image,width,height, my_class_names, pil_img)
-
-    cv2.imwrite("n6.jpg",img_det)
-
     cv2.imshow("detected image",img_det)
     cv2.waitKey(0)

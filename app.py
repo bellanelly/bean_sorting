@@ -3,48 +3,25 @@ import numpy as np
 import ob1
 import cv2
 
-
 img_size = None
-
 img_heightx = 0
 img_widthx = 0
-
-
 def model_inference(img_x, model_name: str, prob_threshold: int, classes_to_show = str):
     global img_heightx , img_widthx, img_size
-
     model=cv2.dnn.readNetFromONNX(model_name)
-
     cvimg = cv2.cvtColor(np.array(img_x), cv2.COLOR_RGB2BGR)
-
-
     img_size = cvimg.shape[:2]
-
-
     img_height, img_width = img_size
-
     img_heightx, img_widthx =   int(img_height/2), int(img_width/2)
     cvimg = cv2.resize(cvimg, (img_widthx, img_heightx))
-
-
-
-
     myclasses = ob1.class_names()
-
     pil_img = True
-
-    
     width,height=640,640
-
     img_d = ob1.detections(model, cvimg, width, height, myclasses, pil_img)
-
     return img_d
 
 
-
-
 description = "Yolov5 beans, groundnuts, stones detection 😊"
-
 with gr.Blocks(theme="NoCrypt/miku") as demo:
     gr.Markdown("# Object Detection With YOLOv5")
     gr.Markdown(description)
